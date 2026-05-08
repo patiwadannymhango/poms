@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Purchase Order {{ purchase_order.po_number }}</title>
+
+    <style>
+
+        /* =========================
+            PAGE SETUP
+        ========================== */
+
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #1f2937;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            line-height: 1.35;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            width: 100%;
+        }
+
+        /* =========================
+            COLORS
+        ========================== */
+
+        .primary-color {
+            color: #0f3d63;
+        }
+
+        .muted {
+            color: #6b7280;
+        }
+
+        /* =========================
+            HEADER
+        ========================== */
+
+        .header {
+            width: 100%;
+            margin-bottom: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .header-table td {
+            vertical-align: top;
+        }
+
+        .company-left {
+            width: 60%;
+        }
+
+        .company-right {
+            width: 40%;
+            text-align: right;
+        }
+
+        .company-logo {
+            max-height: 100px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+        }
+
+        .company-name {
+            font-size: 15px;
+            font-weight: bold;
+            color: #0f3d63;
+            margin-bottom: 4px;
+        }
+
+        .company-info {
+            line-height: 1.45;
+            color: #4b5563;
+            font-size: 9px;
+        }
+
+        .document-title {
+            font-size: 34px;
+            font-weight: bold;
+            color: #0f3d63;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .po-meta {
+            width: 100%;
+            border-collapse: collapse;
+            margin-left: auto;
+        }
+
+        .po-meta td {
+            padding: 3px 0;
+            font-size: 9px;
+        }
+
+        .po-meta-label {
+            font-weight: bold;
+            color: #111827;
+            width: 45%;
+        }
+
+        .po-meta-value {
+            text-align: right;
+            color: #374151;
+        }
+
+        /* =========================
+            SECTION CARDS
+        ========================== */
+
+        .grid-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+        }
+
+        .grid-table td {
+            width: 50%;
+            vertical-align: top;
+        }
+
+        .grid-left {
+            padding-right: 6px;
+        }
+
+        .grid-right {
+            padding-left: 6px;
+        }
+
+        .card {
+            border: 1px solid #dbe2ea;
+            border-radius: 4px;
+            overflow: hidden;
+            min-height: 150px;
+        }
+
+        .card-header {
+            background: #f8fafc;
+            color: #0f3d63;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .info-row {
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            font-size: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 9px;
+            color: #111827;
+            line-height: 1.4;
+        }
+
+        /* =========================
+            ORDER DETAILS
+        ========================== */
+
+        .details-box {
+            border: 1px solid #dbe2ea;
+            margin-bottom: 14px;
+        }
+
+        .details-header {
+            background: #f8fafc;
+            border-bottom: 1px solid #dbe2ea;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #0f3d63;
+            text-transform: uppercase;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .details-table td {
+            width: 25%;
+            padding: 10px;
+            border-right: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        .details-table td:last-child {
+            border-right: none;
+        }
+
+        .details-label {
+            font-size: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 3px;
+        }
+
+        .details-value {
+            font-size: 9px;
+            color: #111827;
+            line-height: 1.4;
+        }
+
+        /* =========================
+            ITEMS TABLE
+        ========================== */
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 14px;
+        }
+
+        .items-table thead th {
+            background: #0f3d63;
+            color: white;
+            padding: 7px 6px;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            border: 1px solid #0f3d63;
+        }
+
+        .items-table tbody td {
+            border: 1px solid #dbe2ea;
+            padding: 7px 6px;
+            font-size: 9px;
+            vertical-align: top;
+        }
+
+        .items-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* =========================
+            BOTTOM SECTION
+        ========================== */
+
+        .bottom-section {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+        }
+
+        .bottom-section td {
+            vertical-align: top;
+        }
+
+        .notes-column {
+            width: 58%;
+            padding-right: 10px;
+        }
+
+        .totals-column {
+            width: 42%;
+        }
+
+        .notes-box {
+            border: 1px solid #dbe2ea;
+            min-height: 120px;
+        }
+
+        .notes-header {
+            background: #f8fafc;
+            border-bottom: 1px solid #dbe2ea;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #0f3d63;
+            text-transform: uppercase;
+        }
+
+        .notes-body {
+            padding: 10px;
+            line-height: 1.55;
+            color: #374151;
+            font-size: 9px;
+        }
+
+        .totals-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .totals-table td {
+            border: 1px solid #dbe2ea;
+            padding: 9px;
+            font-size: 9px;
+        }
+
+        .totals-label {
+            background: #f8fafc;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .grand-total td {
+            background: #0f3d63;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        /* =========================
+            FOOTER
+        ========================== */
+
+        .footer {
+            margin-top: 14px;
+            padding-top: 8px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            font-size: 8px;
+            color: #6b7280;
+        }
+
+        /* =========================
+            PRINT SAFETY
+        ========================== */
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        .card,
+        .details-box,
+        .notes-box,
+        .totals-table {
+            page-break-inside: avoid;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- =========================
+        HEADER
+    ========================== -->
+
+    <div class="header">
+
+        <table class="header-table">
+
+            <tr>
+
+                <!-- COMPANY -->
+
+                <td class="company-left">
+
+                    {% if company.logo %}
+                        <img src="{{ company.logo.url }}" class="company-logo">
+                    {% endif %}
+
+                    <div class="company-name">
+                        {{ company.name }}
+                    </div>
+
+                    <div class="company-info">
+
+                        {% if company.address %}
+                            {{ company.address }}<br>
+                        {% endif %}
+
+                        {% if company.phone %}
+                            Phone: {{ company.phone }}<br>
+                        {% endif %}
+
+                        {% if company.email %}
+                            Email: {{ company.email }}
+                        {% endif %}
+
+                    </div>
+
+                </td>
+
+                <!-- PO META -->
+
+                <td class="company-right">
+
+                    <div class="document-title">
+                        PURCHASE ORDER
+                    </div>
+
+                    <table class="po-meta">
+
+                        <tr>
+                            <td class="po-meta-label">
+                                Order No
+                            </td>
+
+                            <td class="po-meta-value">
+                                {{ purchase_order.po_number }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="po-meta-label">
+                                Order Date
+                            </td>
+
+                            <td class="po-meta-value">
+                                {{ purchase_order.date|date:"F j, Y" }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="po-meta-label">
+                                Date Required
+                            </td>
+
+                            <td class="po-meta-value">
+                                {% if purchase_order.date_required %}
+                                    {{ purchase_order.date_required|date:"F j, Y" }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <!-- =========================
+        SUPPLIER / SHIP TO
+    ========================== -->
+
+    <table class="grid-table">
+
+        <tr>
+
+            <!-- SUPPLIER -->
+
+            <td class="grid-left">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        Supplier
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="card-title">
+                            {{ purchase_order.supplier.name }}
+                        </div>
+
+                        {% if purchase_order.supplier.address %}
+                        <div class="info-row">
+
+                            <div class="info-label">
+                                Address
+                            </div>
+
+                            <div class="info-value">
+                                {{ purchase_order.supplier.address }}
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if purchase_order.supplier.phone %}
+                        <div class="info-row">
+
+                            <div class="info-label">
+                                Phone
+                            </div>
+
+                            <div class="info-value">
+                                {{ purchase_order.supplier.phone }}
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                        {% if purchase_order.supplier.email %}
+                        <div class="info-row">
+
+                            <div class="info-label">
+                                Email
+                            </div>
+
+                            <div class="info-value">
+                                {{ purchase_order.supplier.email }}
+                            </div>
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </td>
+
+
+            <!-- SHIP TO -->
+
+            <td class="grid-right">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        Ship To
+                    </div>
+
+                    <div class="card-body">
+
+                        {% if purchase_order.ship_to %}
+
+                            <div class="card-title">
+                                {{ purchase_order.ship_to.name }}
+                            </div>
+
+                            {% if purchase_order.ship_to.address %}
+                            <div class="info-row">
+
+                                <div class="info-label">
+                                    Address
+                                </div>
+
+                                <div class="info-value">
+                                    {{ purchase_order.ship_to.address }}
+                                </div>
+
+                            </div>
+                            {% endif %}
+
+                            {% if purchase_order.ship_to.phone %}
+                            <div class="info-row">
+
+                                <div class="info-label">
+                                    Phone
+                                </div>
+
+                                <div class="info-value">
+                                    {{ purchase_order.ship_to.phone }}
+                                </div>
+
+                            </div>
+                            {% endif %}
+
+                            {% if purchase_order.ship_to.email %}
+                            <div class="info-row">
+
+                                <div class="info-label">
+                                    Email
+                                </div>
+
+                                <div class="info-value">
+                                    {{ purchase_order.ship_to.email }}
+                                </div>
+
+                            </div>
+                            {% endif %}
+
+                        {% else %}
+
+                            <div class="info-value">
+                                No shipping address provided.
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+
+    <!-- =========================
+        ORDER DETAILS
+    ========================== -->
+
+    <div class="details-box">
+
+        <div class="details-header">
+            Order Details
+        </div>
+
+        <table class="details-table">
+
+            <tr>
+
+                <td>
+
+                    <div class="details-label">
+                        Payment Terms
+                    </div>
+
+                    <div class="details-value">
+                        {{ purchase_order.payment_terms }}
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <div class="details-label">
+                        Shipping Method
+                    </div>
+
+                    <div class="details-value">
+                        {{ purchase_order.shipping_method|default:"N/A" }}
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <div class="details-label">
+                        Shipping Terms
+                    </div>
+
+                    <div class="details-value">
+                        {{ purchase_order.shipping_terms|default:"N/A" }}
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <div class="details-label">
+                        Contact Person
+                    </div>
+
+                    <div class="details-value">
+
+                        {% if purchase_order.contact_name %}
+                            {{ purchase_order.contact_name }}
+                        {% endif %}
+
+                        {% if purchase_order.contact_phone %}
+                            <br>
+                            {{ purchase_order.contact_phone }}
+                        {% endif %}
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+
+    <!-- =========================
+        ITEMS TABLE
+    ========================== -->
+
+    <table class="items-table">
+
+        <thead>
+
+            <tr>
+
+                <th width="45%">
+                    Description
+                </th>
+
+                <th width="12%">
+                    UOM
+                </th>
+
+                <th width="12%">
+                    Qty
+                </th>
+
+                <th width="15%">
+                    Unit Price
+                </th>
+
+                <th width="16%">
+                    Amount
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for item in purchase_order.items.all %}
+
+            <tr>
+
+                <td>
+                    {{ item.description }}
+                </td>
+
+                <td class="text-center">
+                    {{ item.uom|default:"-" }}
+                </td>
+
+                <td class="text-center">
+                    {{ item.quantity|floatformat:2 }}
+                </td>
+
+                <td class="text-right">
+                    {{ item.unit_price|floatformat:2 }}
+                </td>
+
+                <td class="text-right">
+                    {{ item.line_total|floatformat:2 }}
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="5" class="text-center">
+                    No items added
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+
+    <!-- =========================
+        NOTES + TOTALS
+    ========================== -->
+
+    <table class="bottom-section">
+
+        <tr>
+
+            <!-- NOTES -->
+
+            <td class="notes-column">
+
+                <div class="notes-box">
+
+                    <div class="notes-header">
+                        Additional Information
+                    </div>
+
+                    <div class="notes-body">
+
+                        <strong>Important Notes</strong>
+
+                        <br><br>
+
+                        Kindly reference the Purchase Order Number on all invoices and delivery documents.
+
+                        <br><br>
+
+                        Goods supplied should match the specifications and quantities stated in this Purchase Order.
+
+                        <br><br>
+
+                        {% if purchase_order.contact_name %}
+                            For clarification, contact
+                            <strong>{{ purchase_order.contact_name }}</strong>
+                        {% endif %}
+
+                        {% if purchase_order.contact_phone %}
+                            at {{ purchase_order.contact_phone }}
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </td>
+
+
+            <!-- TOTALS -->
+
+            <td class="totals-column">
+
+                <table class="totals-table">
+
+                    <tr>
+
+                        <td class="totals-label">
+                            Subtotal
+                        </td>
+
+                        <td class="text-right">
+                            {{ purchase_order.subtotal|floatformat:2 }}
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td class="totals-label">
+                            VAT ({{ purchase_order.vat_percent }}%)
+                        </td>
+
+                        <td class="text-right">
+                            {{ purchase_order.vat_amount|floatformat:2 }}
+                        </td>
+
+                    </tr>
+
+                    <tr class="grand-total">
+
+                        <td>
+                            Total
+                        </td>
+
+                        <td class="text-right">
+                            {{ purchase_order.total|floatformat:2 }}
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+
+    <!-- =========================
+        FOOTER
+    ========================== -->
+
+    <div class="footer">
+        Generated electronically by {{ company.name }}
+    </div>
+
+</div>
+
+</body>
+</html>

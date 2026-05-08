@@ -1,0 +1,53 @@
+/* --- LOGIN PAGE MODERNIZATION --- */
+body.login-page {
+    background: #f4f6f9 !important; /* Soft light grey background */
+}
+
+.login-box {
+    width: 450px !important; /* Slightly wider for a professional look */
+}
+
+.login-logo img {
+    border-radius: 4px !important; /* Slight rounding for a modern "card" look */
+    width: 280px !important;       /* Defined rectangular width */
+    height: auto !important;
+    margin-bottom: 20px;
+    /* Subtle depth shadow */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.login-card-body {
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+    border: none !important;
+}
+
+/* --- SIDEBAR & NAV MODERNIZATION --- */
+
+/* Fix sidebar logo to rectangle */
+.brand-link .brand-image {
+    max-height: 32px !important;
+    width: auto !important;
+    border-radius: 2px !important;
+    float: none !important;
+    vertical-align: middle;
+}
+
+.brand-text {
+    font-weight: 600 !important;
+    letter-spacing: 0.5px;
+    margin-left: 10px !important;
+}
+
+/* Modernizing the Sidebar Items */
+.nav-sidebar .nav-item .nav-link {
+    border-radius: 8px !important;
+    margin-bottom: 4px;
+    transition: all 0.2s ease;
+}
+
+/* Active state color - customize to your brand blue/green */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #004a99 !important; 
+    box-shadow: 0 4px 10px rgba(0, 74, 153, 0.3);
+}
