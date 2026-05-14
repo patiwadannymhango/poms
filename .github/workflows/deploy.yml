@@ -20,7 +20,7 @@ jobs:
 
       with:
         host: ${{ secrets.TKEL_EC2_HOST }}
-        username: ${{ secrets.TKEL_EC2_USER }}
+        username: ubuntu
         key: ${{ secrets.TKEL_EC2_SSH_KEY }}
 
         script: |
