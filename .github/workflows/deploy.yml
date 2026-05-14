@@ -1,4 +1,4 @@
-name: Django CI/CD Pipeline
+name: TKEL_POMS CI/CD Pipeline
 
 on:
   push:
