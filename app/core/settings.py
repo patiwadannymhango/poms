@@ -46,8 +46,8 @@ INSTALLED_APPS = [
 
 JAZZMIN_SETTINGS = {
     "site_title": "TKEL PO System",
-    "site_header": "TKEL POMS",
-    "site_brand": "TKEL POMS",
+    "site_header": "TKEL POMX",
+    "site_brand": "TKEL POMX",
     "welcome_sign": "Purchase Order Management System", # Modernized text
     "copyright": "Tripple K Engineering Limited",
 
