@@ -1,0 +1,37 @@
+name: Django CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+
+      with:
+        host: ${{ secrets.TKEL_EC2_HOST }}
+        username: ${{ secrets.TKEL_EC2_USER }}
+        key: ${{ secrets.TKEL_EC2_SSH_KEY }}
+
+        script: |
+          cd poms
+
+          git pull origin main
+
+          docker compose down
+
+          docker compose up --build -d
+
+          docker compose exec -T web python manage.py migrate
+
+          docker compose exec -T web python manage.py collectstatic --noinput
